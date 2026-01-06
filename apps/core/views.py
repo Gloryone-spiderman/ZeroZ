@@ -1,16 +1,19 @@
 from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.response import Response
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.filters import OrderingFilter,SearchFilter
 from .models import Article
 from .serializers import ArticleSerializer
 # Create your views here.
 
 class ArticleViewSet(ModelViewSet):
-    queryset = Article.objects.all()
+    queryset = Article.objects.all().order_by('-created_at')
     serializer_class = ArticleSerializer
-    filter_backends = [SearchFilter,OrderingFilter]
-    ordering_fields = ['title','created_at']
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
 
 
 class ArticleAPIView(APIView):

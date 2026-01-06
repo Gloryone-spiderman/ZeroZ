@@ -2,3 +2,5 @@ db.sqlite3tmlcov/
 /apps/**/migrations/
 /apps/*/migrations/
 !/apps/*/migrations/__init__.py
+/apps/core/migrations/*
+/apps/core/migrations/
